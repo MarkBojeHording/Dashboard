@@ -12,6 +12,7 @@ body {
 }
 
 main {
+  position: relative;
   padding: 15px;
   height: 100vh;
   display: flex;
@@ -24,27 +25,15 @@ div.top {
   justify-content: space-between;
 }
 
-h1.time {
-  text-align: center;
+h1#time {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   font-size: 5rem;
-}
-
-div#crypto {
-  font-size: 1.3rem;
-}
-
-div#crypto > p {
-  margin: 0;
-}
-
-div#crypto-top {
-  display: flex;
-  align-items: center;
-  margin-bottom: 5px;
-}
-
-div#crypto-top > span {
-  margin-left: 10px;
+  font-weight: bold;
+  text-align: center;
+  white-space: nowrap;
 }
 
 div#weather {
@@ -58,23 +47,29 @@ div#weather {
 }
 
 div#weather > img {
-  width: 10px;
+  width: 80px;
+  height: auto;
+  margin-bottom: 5px;
 }
 
 p.weather-city {
-  width: 100%;
-  text-align: right;
-  margin: 0;
-  margin-top: -10px;
-  font-size: 1.2rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 5px 0;
 }
 
 p.weather-temp {
-  margin: 0;
-  font-size: 1.7rem;
-  margin-left: -10px;
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 5px 0;
 }
 
 p#author {
   font-size: 1rem;
+}
+
+p.weather-aqi {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 5px 0;
 }

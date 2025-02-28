@@ -16,8 +16,19 @@ app.get('/weather', async (req, res) => {
     }
 
     try {
-        const weatherRes = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`);
+        const weatherRes = await fetch(
+            `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
+        );
+
+        if (!weatherRes.ok) {
+            throw new Error(`Weather API Error: ${weatherRes.status} ${weatherRes.statusText}`);
+        }
+
         const weatherData = await weatherRes.json();
+
+        if (!weatherData.main || !weatherData.weather || !weatherData.weather[0]) {
+            throw new Error("Invalid weather data received from API");
+        }
 
         res.json({
             temperature: Math.round(weatherData.main.temp),
@@ -26,7 +37,7 @@ app.get('/weather', async (req, res) => {
         });
 
     } catch (err) {
-        console.error("Weather Fetch Error:", err);
+        console.error("Weather Fetch Error:", err.message);
         res.status(500).json({ error: "Failed to fetch weather data." });
     }
 });
@@ -40,17 +51,29 @@ app.get('/air-quality', async (req, res) => {
     }
 
     try {
-        const airQualityRes = await fetch(`https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`);
+        const airQualityRes = await fetch(
+            `https://api.openweathermap.org/data/2.5/air_pollution?lat=${lat}&lon=${lon}&appid=${apiKey}`
+        );
+
+        if (!airQualityRes.ok) {
+            throw new Error(`Air Quality API Error: ${airQualityRes.status} ${airQualityRes.statusText}`);
+        }
+
         const airQualityData = await airQualityRes.json();
 
+        if (!airQualityData.list || !airQualityData.list[0] || !airQualityData.list[0].main) {
+            throw new Error("Invalid air quality data received from API");
+        }
+
         res.json({
-            aqi: airQualityData.list[0]?.main.aqi || null,
+            aqi: airQualityData.list[0].main.aqi || null,
+            components: airQualityData.list[0].components || {},
         });
 
     } catch (err) {
-        console.error("Air Quality Fetch Error:", err);
+        console.error("Air Quality Fetch Error:", err.message);
         res.status(500).json({ error: "Failed to fetch air quality data." });
     }
 });
 
-app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+app.listen(PORT, () => console.log(`✅ Server running on http://localhost:${PORT}`));

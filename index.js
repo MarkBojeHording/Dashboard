@@ -3,10 +3,8 @@ async function fetchBackground() {
       const res = await fetch("https://apis.scrimba.com/unsplash/photos/random?orientation=landscape&query=nature");
       const data = await res.json();
       document.body.style.backgroundImage = `url(${data.urls.regular})`;
-      // document.getElementById("author").textContent = `By: ${data.user.name}`;
   } catch (err) {
       document.body.style.backgroundImage = `url(https://images.unsplash.com/photo-1560008511-11c63416e52d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=MnwyMTEwMjl8MHwxfHJhbmRvbXx8fHx8fHx8fDE2MjI4NDIxMTc&ixlib=rb-1.2.1&q=80&w=1080)`;
-      // document.getElementById("author").textContent = `By: Dodi Achmad`;
   }
 }
 
@@ -37,11 +35,16 @@ async function fetchWeather() {
               return;
           }
 
-          if (!airQualityData || !airQualityData.aqi) {
+          if (!airQualityData || airQualityData.aqi === undefined) {
               console.error("Incomplete air quality data received:", airQualityData);
           }
 
           const aqiNumber = airQualityData.aqi || "Unknown";
+
+          // ✅ Fix: Ensure weatherIcon exists
+          const weatherIcon = weatherData.weatherIcon
+              ? `http://openweathermap.org/img/wn/${weatherData.weatherIcon}@2x.png`
+              : "";
 
           const weatherDiv = document.getElementById("weather");
           if (!weatherDiv) {
@@ -50,10 +53,10 @@ async function fetchWeather() {
           }
 
           weatherDiv.innerHTML = `
-              <img src="http://openweathermap.org/img/wn/${weatherData.weatherIcon}@2x.png" alt="Weather Icon"/>
-              <p>🌡 Temperature: <strong>${weatherData.temperature}&deg;C</strong></p>
-              <p>🏙 City: <strong>${weatherData.city}</strong></p>
-              <p>🌫️ Air Quality Index (AQI): <strong>${aqiNumber}</strong></p>
+              <img src="${weatherIcon}" alt="Weather Icon"/>
+              <p class="weather-temp">🌡 Temperature: <strong>${weatherData.temperature}&deg;C</strong></p>
+              <p class="weather-city">🏙 City: <strong>${weatherData.city}</strong></p>
+              <p class="weather-aqi">🌫️ Air Quality Index: <strong>${aqiNumber}</strong></p>
           `;
 
       } catch (err) {
@@ -64,5 +67,6 @@ async function fetchWeather() {
   });
 }
 
-fetchBackground();
+
 fetchWeather();
+fetchBackground();
