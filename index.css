@@ -49,15 +49,16 @@ div#crypto-top > span {
 
 div#weather {
   display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  align-self: flex-start;
-  margin-top: -20px;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: flex-start;
+  margin-left: auto;
+  margin-top: 10px;
+  text-align: right;
 }
 
 div#weather > img {
-  width: 70px;
+  width: 10px;
 }
 
 p.weather-city {

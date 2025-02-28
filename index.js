@@ -10,28 +10,6 @@ async function fetchBackground() {
   }
 }
 
-async function fetchCrypto() {
-  try {
-      const res = await fetch("https://api.coingecko.com/api/v3/coins/dogecoin");
-      if (!res.ok) {
-          throw Error("Something went wrong");
-      }
-      // const data = await res.json();
-      // document.getElementById("crypto-top").innerHTML = `
-      //     <img src="${data.image.small}" />
-      //     <span>${data.name}</span>
-      // `;
-
-  //     document.getElementById("crypto").innerHTML += `
-  //     <p>&#127919;: $${data.market_data.current_price.usd}</p> <!-- 🎯 -->
-  //     <p>&#128070;: $${data.market_data.high_24h.usd}</p> <!-- 👆 -->
-  //     <p>&#128071;: $${data.market_data.low_24h.usd}</p> <!-- 👇 -->
-  // `;
-  } catch (err) {
-      console.error(err);
-  }
-}
-
 function getCurrentTime() {
   const date = new Date();
   document.getElementById("time").textContent = date.toLocaleTimeString("en-us", { timeStyle: "short" });
@@ -41,23 +19,29 @@ setInterval(getCurrentTime, 1000);
 async function fetchWeather() {
   navigator.geolocation.getCurrentPosition(async (position) => {
       try {
-          console.log("Fetching weather data...");
+          console.log("Fetching weather and air quality data...");
 
           const lat = position.coords.latitude;
           const lon = position.coords.longitude;
 
-          const res = await fetch(`http://localhost:3000/weather?lat=${lat}&lon=${lon}`);
-          if (!res.ok) {
-              throw Error("Weather data not available");
+          const weatherRes = await fetch(`http://localhost:3000/weather?lat=${lat}&lon=${lon}`);
+          const weatherData = await weatherRes.json();
+          console.log("Weather Data Received:", weatherData);
+
+          const airQualityRes = await fetch(`http://localhost:3000/air-quality?lat=${lat}&lon=${lon}`);
+          const airQualityData = await airQualityRes.json();
+          console.log("Air Quality Data Received:", airQualityData);
+
+          if (!weatherData || !weatherData.temperature || !weatherData.city) {
+              console.error("Incomplete weather data received:", weatherData);
+              return;
           }
 
-          const data = await res.json();
-          console.log("Weather Data:", data);
+          if (!airQualityData || !airQualityData.aqi) {
+              console.error("Incomplete air quality data received:", airQualityData);
+          }
 
-          const iconUrl = `http://openweathermap.org/img/wn/${data.weatherIcon}@2x.png`;
-
-          const airQualityLevels = ["Good", "Fair", "Moderate", "Poor", "Very Poor"];
-          const airQuality = airQualityLevels[data.airQuality - 1];
+          const aqiNumber = airQualityData.aqi || "Unknown";
 
           const weatherDiv = document.getElementById("weather");
           if (!weatherDiv) {
@@ -66,10 +50,10 @@ async function fetchWeather() {
           }
 
           weatherDiv.innerHTML = `
-              <img src="${iconUrl}" alt="Weather Icon"/>
-              <p class="weather-temp">${data.temperature}&deg;C</p>
-              <p class="weather-city">${data.city}</p>
-              <p class="air-quality">🌫️ Air Quality: <strong>${airQuality}</strong></p>
+              <img src="http://openweathermap.org/img/wn/${weatherData.weatherIcon}@2x.png" alt="Weather Icon"/>
+              <p>🌡 Temperature: <strong>${weatherData.temperature}&deg;C</strong></p>
+              <p>🏙 City: <strong>${weatherData.city}</strong></p>
+              <p>🌫️ Air Quality Index (AQI): <strong>${aqiNumber}</strong></p>
           `;
 
       } catch (err) {
@@ -81,5 +65,4 @@ async function fetchWeather() {
 }
 
 fetchBackground();
-fetchCrypto();
 fetchWeather();

@@ -1,16 +1,15 @@
 {
-  "name": "Scrim-s01ub8b",
-  "description": "https://scrimba.com/frontend-path-c0j/~0o3",
+  "name": "dashboard",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "server.js",
   "scripts": {
-    "start": "vite",
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "start": "node server.js"
   },
   "dependencies": {
+    "express": "^4.18.2",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.7",
-    "express": "^4.21.2",
-    "node-fetch": "^3.3.2",
     "vite": "latest"
   }
 }
