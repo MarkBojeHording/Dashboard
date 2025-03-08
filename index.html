@@ -3,19 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Date & Sidebar</title>
+    <title>Weather Widget</title>
     <link rel="stylesheet" href="styles.css">
 </head>
 <body class="dark-mode">
-    <aside id="sidebar" class="sidebar">
-        <button id="close-sidebar" class="close-button">&times;</button>
-        <ul class="menu-list">
-            <li><a href="#">🌦 Weather</a></li>
-            <li><a href="#">🔍 Search</a></li>
-            <li><a href="#">💨 Air Quality</a></li>
-            <li><a href="#">📰 News</a></li>
-        </ul>
-    </aside>
+
+  <!-- Sidebar Menu -->
 
     <header class="header">
         <button id="menu-btn" class="menu-button">☰</button>
@@ -28,6 +21,49 @@
         </div>
     </header>
 
-    <script src="script.js"></script>
+    <div id="sidebar" class="sidebar">
+      <button id="close-sidebar" class="close-button">✖</button>
+      <ul class="menu-list">
+          <li><a href="#">Weather</a></li>
+          <li><a href="#">Search</a></li>
+          <li><a href="#">Air Quality</a></li>
+          <li><a href="#">News</a></li>
+      </ul>
+    </div>
+
+    <!-- Weather Widget -->
+    <div class="weather-widget">
+        <div class="weather-header">
+            <h2>🌤 Weather</h2>
+        </div>
+        <div id="weather-container">
+            <h3 id="city-name"></h3>
+            <p id="current-date"></p>
+            <div class="weather-main">
+                <h1 id="temperature"></h1>
+                <p id="weather-description"></p>
+            </div>
+            <div class="weather-details">
+                <div class="weather-box">
+                    <p>Feels Like</p>
+                    <h3 id="feels-like"></h3>
+                </div>
+                <div class="weather-box">
+                    <p>Humidity</p>
+                    <h3 id="humidity"></h3>
+                </div>
+                <div class="weather-box">
+                    <p>Wind</p>
+                    <h3 id="wind-speed"></h3>
+                </div>
+                <div class="weather-box">
+                    <p>Clouds</p>
+                    <h3 id="clouds"></h3>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="script.js"></script>
 </body>
 </html>

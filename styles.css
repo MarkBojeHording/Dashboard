@@ -8,24 +8,29 @@ body {
 .header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 15px 20px;
+  justify-content: center;
+  padding: 25px 30px;
   color: white;
   transition: background 0.3s ease;
-  position: relative;
   background-color: #0f172a;
+  position: relative;
 }
 
-body.light-mode {
-  background-color: #f4f4f4;
-  color: black;
+/* Position menu and date on sides */
+.menu-button {
+  position: absolute;
+  left: 20px;
 }
 
-.light-mode .header {
-  background-color: #1e293b;
-  color: black;
+.right-section {
+  position: absolute;
+  right: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
 
+/* Center the time */
 .time-container {
   flex-grow: 1;
   display: flex;
@@ -35,14 +40,15 @@ body.light-mode {
 .time-display {
   font-size: 24px;
   font-weight: bold;
+  text-align: center;
   margin: 0;
 }
 
-/* Ensure the sidebar is completely hidden by default */
+/* Sidebar */
 .sidebar {
   position: fixed;
   top: 0;
-  left: -250px; /* Move completely off-screen */
+  left: -250px; /* Start hidden off-screen */
   width: 250px;
   height: 100%;
   background-color: #0f172a;
@@ -53,11 +59,10 @@ body.light-mode {
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  overflow-x: hidden;
-  visibility: hidden; /* Hide sidebar from the start */
+  visibility: hidden; /* Hide from view */
 }
 
-/* Sidebar will be visible when 'open' class is added */
+
 .sidebar.open {
   left: 0;
   visibility: visible;
@@ -99,28 +104,25 @@ body.light-mode {
   background: rgba(255, 255, 255, 0.2);
 }
 
-body.sidebar-open {
-  overflow-x: hidden;
+.weather-widget {
+  max-width: 400px;
+  background-color: #0f172a;
+  color: white;
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  margin: 50px auto;
 }
 
-.menu-button {
-  background: none;
-  border: none;
-  color: inherit;
-  font-size: 24px;
-  cursor: pointer;
+/* Light Mode */
+body.light-mode {
+  background-color: #f4f4f4;
+  color: black;
 }
 
-.right-section {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin-left: auto;
-}
-
-.date-display {
-  font-size: 18px;
-  font-weight: bold;
+.light-mode .header {
+  background-color: #1e293b;
+  color: black;
 }
 
 .theme-toggle {
