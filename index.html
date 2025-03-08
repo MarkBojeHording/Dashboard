@@ -8,8 +8,6 @@
 </head>
 <body class="dark-mode">
 
-  <!-- Sidebar Menu -->
-
     <header class="header">
         <button id="menu-btn" class="menu-button">☰</button>
         <div class="time-container">
@@ -29,6 +27,18 @@
           <li><a href="#">Air Quality</a></li>
           <li><a href="#">News</a></li>
       </ul>
+    </div>
+
+    <div class="main-container">
+    <!-- Chatbot -->
+    <div id="chat-container">
+        <div id="chat-box">
+            <div id="messages"></div>
+        </div>
+        <div id="chat-input-container">
+            <input type="text" id="chat-input" placeholder="Ask me anything" />
+            <button id="send-btn">➤</button>
+        </div>
     </div>
 
     <!-- Weather Widget -->
@@ -63,6 +73,7 @@
             </div>
         </div>
     </div>
+</div>
 
     <script type="module" src="script.js"></script>
 </body>

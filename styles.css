@@ -3,6 +3,9 @@ body {
   margin: 0;
   padding: 0;
   transition: background-color 0.3s ease, color 0.3s ease;
+  background-color: #0f172a; /* Dark background */
+  color: white;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .header {
@@ -28,6 +31,7 @@ body {
   display: flex;
   align-items: center;
   gap: 10px;
+  font-size: 1.2em;
 }
 
 /* Center the time */
@@ -61,7 +65,6 @@ body {
   flex-direction: column;
   visibility: hidden; /* Hide from view */
 }
-
 
 .sidebar.open {
   left: 0;
@@ -105,23 +108,47 @@ body {
 }
 
 .weather-widget {
+  flex: 1;
   max-width: 400px;
   background-color: #0f172a;
   color: white;
   padding: 20px;
   border-radius: 15px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  margin: 50px auto;
 }
 
 /* Light Mode */
 body.light-mode {
-  background-color: #f4f4f4;
+  background-color: #f4f4f4; /* Light theme background */
+  color: black;
+}
+
+.light-mode .weather-widget {
+  background-color: #e2e8f0;
+  color: black;
+}
+
+.light-mode .header,
+.light-mode .sidebar,
+.light-mode .weather-widget {
+    background-color: #e2e8f0; /* Light backgrounds for sections */
+    color: black;
+}
+
+.light-mode .menu-list a {
   color: black;
 }
 
 .light-mode .header {
   background-color: #1e293b;
+  color: black;
+}
+
+.light-mode .menu-list a:hover {
+  background: rgba(0, 0, 0, 0.1);
+}
+
+.light-mode .theme-toggle {
   color: black;
 }
 
@@ -136,4 +163,127 @@ body.light-mode {
 
 .theme-toggle:hover {
   transform: rotate(30deg);
+}
+
+#chat-container {
+  flex: 1;
+  max-width: 500px;
+  height: 500px;
+  background: #444654;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.light-mode #chat-container {
+  background-color: #e2e8f0;
+}
+
+.light-mode .bot-message {
+  background-color: #f1f1f1;
+  color: black;
+}
+
+#chat-box {
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+#messages {
+  display: flex;
+  flex-direction: column;
+}
+
+.message {
+  padding: 12px 15px;
+  border-radius: 12px;
+  max-width: 80%;
+  word-wrap: break-word;
+  white-space: pre-wrap; /* ✅ Fix: Preserve spaces & newlines */
+  font-size: 16px;
+}
+
+.user-message {
+  align-self: flex-end;
+  background: #0da37f;
+  color: white;
+  border-radius: 15px 15px 0px 15px;
+}
+
+.bot-message {
+  align-self: flex-start;
+  background: #565869;
+  color: white;
+  border-radius: 15px 15px 15px 0px;
+}
+
+#chat-input-container {
+  display: flex;
+  padding: 12px;
+  background-color: #343541;
+  border-top: 1px solid #555;
+}
+
+.light-mode #chat-input-container {
+  background-color: #e2e8f0;
+}
+
+#chat-input {
+  flex-grow: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  background-color: #40414F;
+  color: white;
+  font-size: 16px;
+  outline: none;
+}
+
+.light-mode #chat-input {
+  background-color: #ffffff;
+  color: black;
+}
+
+#send-btn {
+  padding: 12px;
+  background: #0da37f;
+  color: white;
+  border: none;
+  cursor: pointer;
+  font-size: 18px;
+  border-radius: 5px;
+  margin-left: 10px;
+}
+
+.main-container {
+  display: flex;
+  justify-content: center; /* Center horizontally */
+  align-items: flex-start;
+  gap: 20px; /* Space between them */
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto; /* Center on page */
+  flex-wrap: wrap; /* Wrap on small screens */
+}
+
+#send-btn:hover {
+  background: #0c8e6f;
+}
+@media screen and (max-width: 768px) {
+  .main-container {
+      flex-direction: column; /* Stack them on small screens */
+      align-items: center;
+  }
+
+  #chat-container,
+  .weather-widget {
+      max-width: 90%;
+      width: 100%;
+  }
 }
