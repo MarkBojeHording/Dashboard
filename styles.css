@@ -1,0 +1,81 @@
+/* Global Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Header Styles */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background-color: #0f172a; /* Solid color fallback */
+  padding: 15px 20px;
+  color: white;
+  transition: background 0.3s ease;
+}
+
+/* Light Mode */
+body.light-mode {
+  background-color: #f4f4f4;
+  color: black;
+}
+
+.light-mode .header {
+  background: rgba(255, 255, 255, 0.6); /* Transparent Light Background */
+  color: black;
+}
+
+/* Time Display - Centered in Header */
+.time-display {
+  font-size: 24px;
+  font-weight: bold;
+  text-align: center;
+  flex-grow: 1; /* Ensures it stays centered */
+}
+
+.time-container {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+  width: auto;
+}
+
+/* Date and Toggle Section - Positioned on the Right */
+.right-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Date Display */
+.date-display {
+  font-size: 18px;
+  font-weight: bold;
+}
+
+/* Menu Button (Left) */
+.menu-button {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Theme Toggle Button (Right) */
+.theme-toggle {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle:hover {
+  transform: rotate(30deg);
+}

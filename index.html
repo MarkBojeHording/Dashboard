@@ -1,19 +1,27 @@
-<html>
-  <head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
-    <title>Weather Dashboard</title>
-    <link rel="stylesheet" href="index.css">
-  </head>
-  <body>
-    <main>
-      <div class="top">
-          <div id="weather"></div>
-          <div id="uv-air-quality"></div>
-      </div>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Date & Time</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Link to CSS -->
+</head>
+<body class="dark-mode"> <!-- Default to dark mode -->
+    <header class="header">
+        <button id="menu-btn" class="menu-button">☰</button> <!-- Menu Button -->
 
-      <h1 id="time" class="time"></h1>
-      <p id="author"></p>
-    </main>
-    <script src="index.js" defer></script>
-  </body>
+        <!-- Time Display in Center -->
+        <div class="time-container">
+            <h1 id="time" class="time-display"></h1>
+        </div>
+
+        <!-- Right Section: Date & Theme Toggle -->
+        <div class="right-section">
+            <p id="date" class="date-display"></p>
+            <button id="theme-toggle" class="theme-toggle">🌞</button> <!-- Toggle Button -->
+        </div>
+    </header>
+
+    <script src="script.js"></script> <!-- Link to JavaScript -->
+</body>
 </html>
