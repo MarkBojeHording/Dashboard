@@ -3,25 +3,31 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dynamic Date & Time</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Link to CSS -->
+    <title>Dynamic Date & Sidebar</title>
+    <link rel="stylesheet" href="styles.css">
 </head>
-<body class="dark-mode"> <!-- Default to dark mode -->
-    <header class="header">
-        <button id="menu-btn" class="menu-button">☰</button> <!-- Menu Button -->
+<body class="dark-mode">
+    <aside id="sidebar" class="sidebar">
+        <button id="close-sidebar" class="close-button">&times;</button>
+        <ul class="menu-list">
+            <li><a href="#">🌦 Weather</a></li>
+            <li><a href="#">🔍 Search</a></li>
+            <li><a href="#">💨 Air Quality</a></li>
+            <li><a href="#">📰 News</a></li>
+        </ul>
+    </aside>
 
-        <!-- Time Display in Center -->
+    <header class="header">
+        <button id="menu-btn" class="menu-button">☰</button>
         <div class="time-container">
             <h1 id="time" class="time-display"></h1>
         </div>
-
-        <!-- Right Section: Date & Theme Toggle -->
         <div class="right-section">
             <p id="date" class="date-display"></p>
-            <button id="theme-toggle" class="theme-toggle">🌞</button> <!-- Toggle Button -->
+            <button id="theme-toggle" class="theme-toggle">🌞</button>
         </div>
     </header>
 
-    <script src="script.js"></script> <!-- Link to JavaScript -->
+    <script src="script.js"></script>
 </body>
 </html>
