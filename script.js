@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
   setupSidebar();
   setupThemeToggle();
   setupChatbot();
-  updateBackgroundImage(); // ✅ Ensure this function exists before calling it
+  updateBackgroundImage();
 });
 
 // ✅ Function to Update Time & Date
@@ -79,75 +79,49 @@ function setupThemeToggle() {
   });
 }
 
-// ✅ Fetch Weather Data
+// ✅ Fetch Weather Data with Improved Error Handling
 async function fetchWeatherByLocation() {
   if (!navigator.geolocation) {
       console.error("❌ Geolocation is not supported by this browser.");
-      setDefaultCity();
+      displayWeatherError();
       return;
   }
 
-  navigator.geolocation.getCurrentPosition(async (position) => {
-      const lat = position.coords.latitude;
-      const lon = position.coords.longitude;
+  navigator.geolocation.getCurrentPosition(
+      async (position) => {
+          const lat = position.coords.latitude;
+          const lon = position.coords.longitude;
+          console.log(`📍 User Location: ${lat}, ${lon}`);
 
-      console.log(`📍 User Location: ${lat}, ${lon}`);
+          const url = `http://localhost:5001/api/weather?lat=${lat}&lon=${lon}`;
 
-      const url = `http://localhost:5001/api/weather?lat=${lat}&lon=${lon}`;
-
-      try {
-          const response = await fetch(url);
-          if (!response.ok) {
-              throw new Error(`Error fetching weather: ${response.statusText}`);
+          try {
+              const response = await fetch(url);
+              if (!response.ok) {
+                  throw new Error(`Error fetching weather: ${response.statusText}`);
+              }
+              const data = await response.json();
+              updateWeatherUI(data);
+          } catch (error) {
+              console.error("❌ Failed to fetch weather:", error.message);
+              displayWeatherError();
           }
-          const data = await response.json();
-          updateWeatherUI(data);
-      } catch (error) {
-          console.error("Error fetching weather:", error);
-          setDefaultCity();
+      },
+      (error) => {
+          console.error("❌ Geolocation error:", error.message || "Location information is unavailable.");
+          displayWeatherError();
       }
-  }, (error) => {
-      console.error("❌ Geolocation error:", error.message || "Unknown error");
-      setDefaultCity();
-  });
+  );
 }
 
-// ✅ Default to Chiang Mai if location is unavailable
-function setDefaultCity() {
-  console.log("🌍 Using default location: Chiang Mai");
-  fetchWeather("Chiang Mai");
-}
-
-async function fetchWeather(city) {
-  const url = `http://localhost:5001/api/weather?city=${city}`;
-
-  try {
-      const response = await fetch(url);
-      if (!response.ok) {
-          throw new Error(`Error fetching weather: ${response.statusText}`);
-      }
-      const data = await response.json();
-      updateWeatherUI(data);
-  } catch (error) {
-      console.error("Error fetching weather:", error);
-      document.getElementById("weather-container").innerHTML = `<p>⚠️ Unable to fetch weather data</p>`;
+// ✅ Fallback: Show Weather Error
+function displayWeatherError() {
+  const weatherContainer = document.getElementById("weather-container");
+  if (weatherContainer) {
+      weatherContainer.innerHTML = `<p>⚠️ Unable to fetch weather data</p>`;
+  } else {
+      console.error("❌ Weather container not found in DOM.");
   }
-}
-
-// ✅ Update Weather UI
-function updateWeatherUI(data) {
-  if (!data || !data.main) {
-      console.error("❌ Invalid weather data received:", data);
-      return;
-  }
-
-  document.getElementById("city-name").innerText = data.name || "Unknown";
-  document.getElementById("temperature").innerText = `${Math.round(data.main.temp)}°C`;
-  document.getElementById("weather-description").innerText = data.weather[0]?.description || "No description";
-  document.getElementById("feels-like").innerText = `${Math.round(data.main.feels_like)}°C`;
-  document.getElementById("humidity").innerText = `${data.main.humidity}%`;
-  document.getElementById("wind-speed").innerText = `${Math.round(data.wind.speed)} m/s`;
-  document.getElementById("clouds").innerText = `${data.clouds?.all || 0}%`;
 }
 
 // ✅ Chatbot Setup
@@ -165,25 +139,6 @@ function setupChatbot() {
   chatInput.addEventListener("keypress", (e) => {
       if (e.key === "Enter") sendMessage();
   });
-}
-
-// ✅ Fetch Random Nature Background from Pexels
-async function updateBackgroundImage() {
-  try {
-      const response = await fetch(`http://localhost:5001/api/pexels?t=${new Date().getTime()}`);
-      const data = await response.json();
-
-      if (data.imageUrl) {
-          document.body.style.backgroundImage = `url('${data.imageUrl}')`;
-          document.body.style.backgroundSize = "cover";
-          document.body.style.backgroundPosition = "center";
-          document.body.style.backgroundAttachment = "fixed";
-      } else {
-          console.warn("⚠️ No image URL received.");
-      }
-  } catch (error) {
-      console.error("❌ Error fetching Pexels image:", error);
-  }
 }
 
 // ✅ Send Message
@@ -243,4 +198,52 @@ function displayMessage(message, className) {
   messagesContainer.appendChild(messageDiv);
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
   return messageDiv;
+}
+
+// ✅ Display Image in Chat
+function displayImage(imageUrl) {
+  const messagesContainer = document.getElementById("messages");
+  if (!messagesContainer) return;
+
+  const imageDiv = document.createElement("div");
+  imageDiv.classList.add("message", "bot-message");
+
+  const image = document.createElement("img");
+  image.src = imageUrl;
+  image.alt = "Generated Image";
+  image.style.maxWidth = "100%";
+  image.style.borderRadius = "10px";
+  image.style.marginTop = "10px";
+  image.style.display = "none"; // Hide until loaded
+
+  image.onload = () => {
+      image.style.display = "block";
+  };
+
+  image.onerror = () => {
+      imageDiv.innerText = "⚠️ Failed to load image.";
+  };
+
+  imageDiv.appendChild(image);
+  messagesContainer.appendChild(imageDiv);
+  messagesContainer.scrollTop = messagesContainer.scrollHeight;
+}
+
+// ✅ Fetch Random Nature Background from Pexels
+async function updateBackgroundImage() {
+  try {
+      const response = await fetch(`http://localhost:5001/api/pexels?t=${new Date().getTime()}`);
+      const data = await response.json();
+
+      if (data.imageUrl) {
+          document.body.style.backgroundImage = `url('${data.imageUrl}')`;
+          document.body.style.backgroundSize = "cover";
+          document.body.style.backgroundPosition = "center";
+          document.body.style.backgroundAttachment = "fixed";
+      } else {
+          console.warn("⚠️ No image URL received.");
+      }
+  } catch (error) {
+      console.error("❌ Error fetching Pexels image:", error);
+  }
 }

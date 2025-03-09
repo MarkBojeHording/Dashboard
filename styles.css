@@ -22,9 +22,9 @@ body {
 /* ✅ Sidebar Toggle Button */
 .menu-button {
   font-size: 28px;
-  padding: 12px 16px;
-  width: 55px;
-  height: 55px;
+  padding: 2px 8px;
+  width: 40px;
+  height: 40px;
   background-color: rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   border: none;
@@ -196,7 +196,7 @@ body {
   position: fixed;
   top: 0;
   left: -250px;
-  width: 250px;
+  width: 150px;
   height: 100%;
   background-color: #0f172a;
   color: white;
