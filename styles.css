@@ -1,40 +1,38 @@
+/* ✅ Base Styles */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
   transition: background-color 0.3s ease, color 0.3s ease;
-  background-color: #0f172a; /* Dark background */
+  background-color: #0f172a; /* Dark mode */
   color: white;
-  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* ✅ Header */
 .header {
   display: flex;
   align-items: center;
-  justify-content: center;
-  padding: 25px 30px;
-  color: white;
-  transition: background 0.3s ease;
+  justify-content: space-between;
+  padding: 20px;
   background-color: #0f172a;
+  color: white;
   position: relative;
 }
 
-/* Position menu and date on sides */
+/* ✅ Sidebar Toggle Button */
 .menu-button {
-  position: absolute;
-  left: 20px;
+  font-size: 28px;
+  padding: 12px 16px;
+  width: 55px;
+  height: 55px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
 }
 
-.right-section {
-  position: absolute;
-  right: 20px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 1.2em;
-}
-
-/* Center the time */
+/* ✅ Centering Time */
 .time-container {
   flex-grow: 1;
   display: flex;
@@ -44,15 +42,160 @@ body {
 .time-display {
   font-size: 24px;
   font-weight: bold;
-  text-align: center;
   margin: 0;
 }
 
-/* Sidebar */
+/* ✅ Right Section: Date & Theme Toggle */
+.right-section {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  font-size: 1.2em;
+}
+
+/* ✅ Theme Toggle Button */
+.theme-toggle {
+  background: none;
+  border: none;
+  color: inherit;
+  font-size: 24px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.theme-toggle:hover {
+  transform: rotate(30deg);
+}
+
+/* ✅ Search Bar */
+.search-container {
+  display: flex;
+  justify-content: center;
+  margin: 20px auto;
+  max-width: 500px;
+  padding: 10px;
+}
+
+#search-form {
+  display: flex;
+  width: 100%;
+  max-width: 500px;
+  background: rgba(15, 23, 42, 0.5);
+  padding: 10px;
+  border-radius: 25px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.light-mode #search-form {
+  background: rgba(226, 232, 240, 0.5);
+}
+
+#search-input {
+  flex: 1;
+  padding: 12px 15px;
+  border: none;
+  border-radius: 25px 0 0 25px;
+  background-color: transparent;
+  color: white;
+  font-size: 16px;
+  outline: none;
+}
+
+.light-mode #search-input {
+  color: black;
+}
+
+#search-input::placeholder {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.light-mode #search-input::placeholder {
+  color: rgba(0, 0, 0, 0.6);
+}
+
+#search-btn {
+  padding: 12px 18px;
+  border: none;
+  background: #0da37f;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  border-radius: 0 25px 25px 0;
+  transition: background 0.3s ease-in-out;
+}
+
+#search-btn:hover {
+  background: #0c8e6f;
+}
+
+.light-mode #search-btn {
+  background: #0da37f;
+}
+
+.light-mode #search-btn:hover {
+  background: #0c8e6f;
+}
+
+/* ✅ Widgets */
+.widgets-container {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  flex-wrap: wrap;
+  padding: 20px;
+}
+
+.weather-widget, .air-quality-widget {
+  flex: 1;
+  max-width: 400px;
+  background-color: rgba(15, 23, 42, 0.5);
+  padding: 20px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+}
+
+.light-mode .weather-widget, .light-mode .air-quality-widget {
+  background-color: rgba(226, 232, 240, 0.5);
+  color: black;
+}
+
+/* ✅ Chatbot */
+#chat-container {
+  max-width: 800px;
+  height: 600px;
+  background: rgba(15, 23, 42, 0.5);
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(8px);
+  margin: 20px auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+/* ✅ Light Mode */
+.light-mode {
+  background-color: #f4f4f4;
+  color: black;
+}
+
+.light-mode .header, .light-mode .sidebar {
+  background-color: #e2e8f0;
+  color: black;
+}
+
+.light-mode .theme-toggle {
+  color: black;
+}
+
+/* ✅ Sidebar */
 .sidebar {
   position: fixed;
   top: 0;
-  left: -250px; /* Start hidden off-screen */
+  left: -250px;
   width: 250px;
   height: 100%;
   background-color: #0f172a;
@@ -63,7 +206,7 @@ body {
   z-index: 1000;
   display: flex;
   flex-direction: column;
-  visibility: hidden; /* Hide from view */
+  visibility: hidden;
 }
 
 .sidebar.open {
@@ -71,6 +214,7 @@ body {
   visibility: visible;
 }
 
+/* ✅ Close Button */
 .close-button {
   background: none;
   border: none;
@@ -82,6 +226,7 @@ body {
   right: 15px;
 }
 
+/* ✅ Menu List */
 .menu-list {
   list-style: none;
   padding: 50px 10px;
@@ -107,85 +252,7 @@ body {
   background: rgba(255, 255, 255, 0.2);
 }
 
-.weather-widget {
-  flex: 1;
-  max-width: 400px;
-  background-color: #0f172a;
-  color: white;
-  padding: 20px;
-  border-radius: 15px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-}
-
-/* Light Mode */
-body.light-mode {
-  background-color: #f4f4f4; /* Light theme background */
-  color: black;
-}
-
-.light-mode .weather-widget {
-  background-color: #e2e8f0;
-  color: black;
-}
-
-.light-mode .header,
-.light-mode .sidebar,
-.light-mode .weather-widget {
-    background-color: #e2e8f0; /* Light backgrounds for sections */
-    color: black;
-}
-
-.light-mode .menu-list a {
-  color: black;
-}
-
-.light-mode .header {
-  background-color: #1e293b;
-  color: black;
-}
-
-.light-mode .menu-list a:hover {
-  background: rgba(0, 0, 0, 0.1);
-}
-
-.light-mode .theme-toggle {
-  color: black;
-}
-
-.theme-toggle {
-  background: none;
-  border: none;
-  color: inherit;
-  font-size: 24px;
-  cursor: pointer;
-  transition: transform 0.3s ease;
-}
-
-.theme-toggle:hover {
-  transform: rotate(30deg);
-}
-
-#chat-container {
-  flex: 1;
-  max-width: 500px;
-  height: 500px;
-  background: #444654;
-  border-radius: 10px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
-
-.light-mode #chat-container {
-  background-color: #e2e8f0;
-}
-
-.light-mode .bot-message {
-  background-color: #f1f1f1;
-  color: black;
-}
-
+/* ✅ Chatbot Messages */
 #chat-box {
   flex-grow: 1;
   overflow-y: auto;
@@ -205,7 +272,7 @@ body.light-mode {
   border-radius: 12px;
   max-width: 80%;
   word-wrap: break-word;
-  white-space: pre-wrap; /* ✅ Fix: Preserve spaces & newlines */
+  white-space: pre-wrap;
   font-size: 16px;
 }
 
@@ -223,6 +290,7 @@ body.light-mode {
   border-radius: 15px 15px 15px 0px;
 }
 
+/* ✅ Chat Input */
 #chat-input-container {
   display: flex;
   padding: 12px;
@@ -250,6 +318,7 @@ body.light-mode {
   color: black;
 }
 
+/* ✅ Chat Send Button */
 #send-btn {
   padding: 12px;
   background: #0da37f;
@@ -261,28 +330,18 @@ body.light-mode {
   margin-left: 10px;
 }
 
-.main-container {
-  display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: flex-start;
-  gap: 20px; /* Space between them */
-  padding: 20px;
-  max-width: 1200px;
-  margin: 0 auto; /* Center on page */
-  flex-wrap: wrap; /* Wrap on small screens */
-}
-
 #send-btn:hover {
   background: #0c8e6f;
 }
+
+/* ✅ Responsive */
 @media screen and (max-width: 768px) {
-  .main-container {
-      flex-direction: column; /* Stack them on small screens */
+  .widgets-container {
+      flex-direction: column;
       align-items: center;
   }
 
-  #chat-container,
-  .weather-widget {
+  #chat-container, .weather-widget, .air-quality-widget {
       max-width: 90%;
       width: 100%;
   }
