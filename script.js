@@ -1,4 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
+  console.log("✅ DOM Content Loaded! Running scripts...");
   updateDateTime();
   setInterval(updateDateTime, 1000);
   fetchWeatherByLocation();
@@ -81,9 +82,11 @@ function setupThemeToggle() {
 
 // ✅ Fetch Weather Data with Improved Error Handling
 async function fetchWeatherByLocation() {
+  console.log("🌍 Fetching weather data...");
+
   if (!navigator.geolocation) {
-      console.error("❌ Geolocation is not supported by this browser.");
-      displayWeatherError();
+      console.error("❌ Geolocation is not supported.");
+      useDefaultLocation();
       return;
   }
 
@@ -92,26 +95,38 @@ async function fetchWeatherByLocation() {
           const lat = position.coords.latitude;
           const lon = position.coords.longitude;
           console.log(`📍 User Location: ${lat}, ${lon}`);
-
-          const url = `http://localhost:5001/api/weather?lat=${lat}&lon=${lon}`;
-
-          try {
-              const response = await fetch(url);
-              if (!response.ok) {
-                  throw new Error(`Error fetching weather: ${response.statusText}`);
-              }
-              const data = await response.json();
-              updateWeatherUI(data);
-          } catch (error) {
-              console.error("❌ Failed to fetch weather:", error.message);
-              displayWeatherError();
-          }
+          fetchWeather(lat, lon);
       },
       (error) => {
-          console.error("❌ Geolocation error:", error.message || "Location information is unavailable.");
-          displayWeatherError();
+          console.warn("⚠️ Geolocation failed, using default location.");
+          useDefaultLocation();
       }
   );
+}
+
+function useDefaultLocation() {
+  // Default to Ho Chi Minh City (Vietnam) if geolocation fails
+  const lat = 10.7769;
+  const lon = 106.7009;
+  console.log(`📍 Using default location: ${lat}, ${lon}`);
+  fetchWeather(lat, lon);
+}
+
+async function fetchWeather(lat, lon) {
+  const url = `http://localhost:5001/api/weather?lat=${lat}&lon=${lon}`;
+  console.log(`🔗 Fetching from: ${url}`);
+
+  try {
+      const response = await fetch(url);
+      if (!response.ok) {
+          throw new Error(`⚠️ API Error: ${response.statusText}`);
+      }
+      const data = await response.json();
+      console.log("🌦 Weather Data:", data);
+      updateWeatherUI(data);
+  } catch (error) {
+      console.error("❌ Weather fetch failed:", error.message);
+  }
 }
 
 // ✅ Fallback: Show Weather Error
