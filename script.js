@@ -4,12 +4,17 @@ document.addEventListener("DOMContentLoaded", () => {
   updateDateTime();
   setInterval(updateDateTime, 1000); // Update time every second
   fetchWeatherByLocation();
-  fetchAirQualityByLocation(); // New: Fetch air quality data
+  fetchAirQualityByLocation(); // Fetch air quality data
   setupSidebar();
   setupThemeToggle();
   setupChatbot();
   updateBackgroundImage();
 });
+
+// Constants
+const API_BASE_URL = "https://dashboard-d2i9.onrender.com"; // Updated to Render server URL
+const DEFAULT_LAT = 10.7769; // Default latitude (Ho Chi Minh City)
+const DEFAULT_LON = 106.7009; // Default longitude (Ho Chi Minh City)
 
 // ✅ Function to Update Time & Date
 function updateDateTime() {
@@ -100,6 +105,11 @@ async function fetchWeatherByLocation() {
   console.log("🌍 Fetching weather data...");
   const weatherContainer = document.getElementById("weather-container");
 
+  if (!weatherContainer) {
+      console.error("❌ Weather container not found in DOM.");
+      return;
+  }
+
   if (!navigator.geolocation) {
       console.error("❌ Geolocation is not supported by this browser.");
       useDefaultLocation();
@@ -115,6 +125,7 @@ async function fetchWeatherByLocation() {
       },
       (error) => {
           console.warn(`⚠️ Geolocation failed with code ${error.code}: ${error.message}`);
+          console.log("ℹ️ Possible causes: Permission denied, location unavailable, or timeout.");
           useDefaultLocation();
       },
       {
@@ -126,14 +137,12 @@ async function fetchWeatherByLocation() {
 }
 
 function useDefaultLocation() {
-  const lat = 10.7769;
-  const lon = 106.7009;
-  console.log(`📍 Using default location: ${lat}, ${lon}`);
-  fetchWeather(lat, lon);
+  console.log(`📍 Using default location: ${DEFAULT_LAT}, ${DEFAULT_LON}`);
+  fetchWeather(DEFAULT_LAT, DEFAULT_LON);
 }
 
 async function fetchWeather(lat, lon) {
-  const url = `http://localhost:5002/api/weather?lat=${lat}&lon=${lon}`;
+  const url = `${API_BASE_URL}/api/weather?lat=${lat}&lon=${lon}`;
   console.log(`🔗 Fetching from: ${url}`);
 
   try {
@@ -197,6 +206,11 @@ async function fetchAirQualityByLocation() {
   console.log("🌫 Fetching air quality data...");
   const aqiContainer = document.getElementById("aqi-container");
 
+  if (!aqiContainer) {
+      console.error("❌ Air Quality container not found in DOM.");
+      return;
+  }
+
   if (!navigator.geolocation) {
       console.error("❌ Geolocation is not supported by this browser.");
       useDefaultLocationForAQI();
@@ -212,6 +226,7 @@ async function fetchAirQualityByLocation() {
       },
       (error) => {
           console.warn(`⚠️ Geolocation failed with code ${error.code}: ${error.message}`);
+          console.log("ℹ️ Possible causes: Permission denied, location unavailable, or timeout.");
           useDefaultLocationForAQI();
       },
       {
@@ -223,14 +238,12 @@ async function fetchAirQualityByLocation() {
 }
 
 function useDefaultLocationForAQI() {
-  const lat = 10.7769;
-  const lon = 106.7009;
-  console.log(`📍 Using default location for AQI: ${lat}, ${lon}`);
-  fetchAirQuality(lat, lon);
+  console.log(`📍 Using default location for AQI: ${DEFAULT_LAT}, ${DEFAULT_LON}`);
+  fetchAirQuality(DEFAULT_LAT, DEFAULT_LON);
 }
 
 async function fetchAirQuality(lat, lon) {
-  const url = `http://localhost:5002/api/air-quality?lat=${lat}&lon=${lon}`;
+  const url = `${API_BASE_URL}/api/air-quality?lat=${lat}&lon=${lon}`;
   console.log(`🔗 Fetching AQI from: ${url}`);
 
   try {
@@ -326,7 +339,7 @@ async function sendMessage() {
   const botMessage = displayMessage("Thinking...", "bot-message");
 
   try {
-      const response = await fetch("http://localhost:5002/chat", {
+      const response = await fetch(`${API_BASE_URL}/chat`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ message: userMessage })
@@ -405,7 +418,9 @@ function displayImage(imageUrl) {
 // ✅ Fetch Random Nature Background from Pexels
 async function updateBackgroundImage() {
   try {
-      const response = await fetch(`http://localhost:5002/api/pexels?t=${new Date().getTime()}`);
+      const url = `${API_BASE_URL}/api/pexels?t=${new Date().getTime()}`;
+      console.log(`📸 Fetching Pexels image from: ${url}`);
+      const response = await fetch(url);
       if (!response.ok) {
           throw new Error(`⚠️ Pexels API Error: ${response.statusText}`);
       }

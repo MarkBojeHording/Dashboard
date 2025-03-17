@@ -1,10 +1,19 @@
 {
   "manifest_version": 3,
-  "name": "Personal Dashboard",
-  "version": "1.0.0",
-  "description": "Just for practicing async JS",
-  "action": {},
+  "name": "Dashboard Extension",
+  "version": "1.0",
+  "description": "A personal dashboard as a Chrome extension",
+  "permissions": [
+    "geolocation",
+    "storage"
+  ],
   "chrome_url_overrides": {
-      "newtab": "index.html"
-  }
+    "newtab": "index.html"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["index.html", "script.js"],
+      "matches": ["<all_urls>"]
+    }
+  ]
 }
