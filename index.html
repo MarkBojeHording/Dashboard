@@ -10,7 +10,7 @@
 <body>
     <!-- Header -->
     <header class="header">
-        <button id="menu-btn" class="menu-button">☰</button>
+        <div class="spacer"></div>
         <div class="time-container">
             <h1 id="time" class="time-display"></h1>
         </div>
@@ -19,17 +19,6 @@
             <button id="theme-toggle" class="theme-toggle">🌞</button>
         </div>
     </header>
-
-    <!-- Sidebar -->
-    <div id="sidebar" class="sidebar">
-        <button id="close-sidebar" class="close-button">✖</button>
-        <ul class="menu-list">
-            <li><a href="#weather-container">Weather</a></li>
-            <li><a href="#search-container">Search</a></li>
-            <li><a href="#aqi-container">Air Quality</a></li>
-            <li><a href="#chat-container">Chat</a></li>
-        </ul>
-    </div>
 
     <!-- Search Container -->
     <div class="search-container">
@@ -74,7 +63,7 @@
             </div>
         </div>
 
-        <!-- Moved Chatbot into widgets-container -->
+        <!-- Chatbot Widget -->
         <div class="chat-widget" id="chat-container">
             <h2>💬 Chatbot</h2>
             <div id="chat-box">

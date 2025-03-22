@@ -5,7 +5,6 @@ document.addEventListener("DOMContentLoaded", () => {
   setInterval(updateDateTime, 1000); // Update time every second
   fetchWeatherByLocation();
   fetchAirQualityByLocation(); // Fetch air quality data
-  setupSidebar();
   setupThemeToggle();
   setupChatbot();
   updateBackgroundImage();
@@ -29,7 +28,10 @@ function updateDateTime() {
           second: "2-digit",
           hour12: true
       });
+  } else {
+      console.error("❌ Time element (#time) not found in DOM.");
   }
+
   if (dateElement) {
       dateElement.innerText = now.toLocaleDateString("en-US", {
           weekday: "long",
@@ -37,36 +39,9 @@ function updateDateTime() {
           day: "numeric",
           year: "numeric"
       });
+  } else {
+      console.error("❌ Date element (#date) not found in DOM.");
   }
-}
-
-// ✅ Sidebar Toggle
-function setupSidebar() {
-  const menuButton = document.getElementById("menu-btn");
-  const sidebar = document.getElementById("sidebar");
-  const closeButton = document.getElementById("close-sidebar");
-
-  if (!menuButton || !sidebar || !closeButton) {
-      console.error("❌ Sidebar elements missing in DOM.");
-      return;
-  }
-
-  menuButton.addEventListener("click", () => {
-      sidebar.classList.add("open");
-      document.body.classList.add("sidebar-open");
-  });
-
-  closeButton.addEventListener("click", () => {
-      sidebar.classList.remove("open");
-      document.body.classList.remove("sidebar-open");
-  });
-
-  document.addEventListener("keydown", (event) => {
-      if (event.key === "Escape") {
-          sidebar.classList.remove("open");
-          document.body.classList.remove("sidebar-open");
-      }
-  });
 }
 
 // ✅ Dark/Light Mode Toggle
@@ -350,7 +325,7 @@ async function sendMessage() {
       }
 
       const data = await response.json();
-      botMessage.innerText = "";
+      botMessage.innerHTML = ""; // Clear "Thinking..." and prepare for paragraphs
 
       if (data.imageUrl) {
           displayImage(data.imageUrl);
@@ -365,12 +340,35 @@ async function sendMessage() {
   }
 }
 
-// ✅ Typing Effect
-function typeText(element, text, i = 0) {
-  if (i < text.length) {
-      element.innerText += text.charAt(i);
-      setTimeout(() => typeText(element, text, i + 1), 20);
+// ✅ Typing Effect with Paragraph Support
+function typeText(element, text) {
+  const paragraphs = text.split("\n").filter(p => p.trim() !== ""); // Split by newlines, remove empty lines
+  let currentParagraph = 0;
+  let currentChar = 0;
+
+  function typeNext() {
+      if (currentParagraph >= paragraphs.length) return; // All paragraphs typed
+
+      const pElement = document.createElement("p");
+      pElement.style.margin = "0 0 10px 0"; // Add spacing between paragraphs
+      element.appendChild(pElement);
+
+      function typeChar() {
+          if (currentChar < paragraphs[currentParagraph].length) {
+              pElement.textContent += paragraphs[currentParagraph][currentChar];
+              currentChar++;
+              setTimeout(typeChar, 20); // Continue typing current paragraph
+          } else {
+              currentChar = 0; // Reset for next paragraph
+              currentParagraph++;
+              setTimeout(typeNext, 200); // Small delay before next paragraph
+          }
+      }
+
+      typeChar();
   }
+
+  typeNext();
 }
 
 // ✅ Display Message in Chat
@@ -380,7 +378,9 @@ function displayMessage(message, className) {
 
   const messageDiv = document.createElement("div");
   messageDiv.classList.add("message", className);
-  messageDiv.innerText = message;
+  if (typeof message === "string") {
+      messageDiv.textContent = message; // For initial text like "Thinking..."
+  }
   messagesContainer.appendChild(messageDiv);
   messagesContainer.scrollTop = messagesContainer.scrollHeight;
   return messageDiv;
