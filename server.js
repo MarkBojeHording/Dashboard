@@ -14,6 +14,7 @@ const aqiCache = new NodeCache({ stdTTL: 600 });
 
 // ✅ CORS Configuration with Dynamic Origin Check
 const allowedOrigins = [
+  "http://localhost:3000",
   "http://localhost:8000",
   "http://127.0.0.1:5501",
   "http://localhost:5501",
