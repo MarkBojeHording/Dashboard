@@ -160,11 +160,12 @@ app.get("/api/pexels", async (req, res) => {
   }
 });
 
+// ✅ Root Route
+app.get("/", (req, res) => {
+  res.send("✅ Server is live. Try /api/weather or /health");
+});
+
 // ✅ Start Server
 app.listen(PORT, () => {
   console.log(`🌍 Server running on port ${PORT}`);
-});
-
-app.get("/", (req, res) => {
-  res.send("✅ Server is live. Try /api/weather or /health");
 });
